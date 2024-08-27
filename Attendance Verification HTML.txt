@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Verification</title>
+</head>
+<body>
+    <h1>Meeting Attendance Verification</h1>
+    <p>Click the link below to verify your attendance:</p>
+    <a href="mailto:rogueaameeting10pm@yahoo.com?subject=Attendance%20Verification%20-%20[Your%20Name]%20-%20[Meeting%20Date]&body=Dear%20Sir/Madam,%0A%0AThis%20is%20to%20verify%20that%20[Your%20Name]%20attended%20the%20meeting%20on%20[Meeting%20Date].%0A%0AThank%20you.">
+        Verify Attendance
+    </a>
+</body>
+</html>
