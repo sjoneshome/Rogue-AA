@@ -1,42 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Verification</title>
-    <script>
-        function capitalizeName(name) {
-            return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-        }
-
-        function sendEmail() {
-            // Prompt the user for their information
-            var firstName = prompt("Please enter your first name:");
-            var lastName = prompt("Please enter your last name:");
-            var meetingDate = prompt("Please enter the date of the meeting:");
-
-            // Ensure the user has entered the information
-            if (firstName && lastName && meetingDate) {
-                // Capitalize names
-                firstName = capitalizeName(firstName);
-                lastName = capitalizeName(lastName);
-
-                // Create the mailto link
-                var mailtoLink = "mailto:rogueaameeting10pm@yahoo.com" +
-                    "?subject=Attendance%20Verification%20-%20" + encodeURIComponent(firstName + " " + lastName) +
-                    "&body=" + encodeURIComponent(firstName + " " + lastName + "\n" + meetingDate);
-
-                // Open the default email client with the mailto link
-                window.location.href = mailtoLink;
-            } else {
-                alert("All fields are required.");
-            }
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        input[type="text"], input[type="date"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Meeting Attendance Verification</h1>
-    <p>Click the button below to verify your attendance:</p>
-    <button onclick="sendEmail()">Verify Attendance</button>
+    <h2>Attendance Verification</h2>
+    <form action="process_form.php" method="post">
+        <label for="fname">First Name:</label><br>
+        <input type="text" id="fname" name="firstname" required><br>
+        <label for="lname">Last Name:</label><br>
+        <input type="text" id="lname" name="lastname" required><br>
+        <label for="date">Date of Attendance:</label><br>
+        <input type="date" id="date" name="date" required><br>
+        <label for="email">Email Address:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        // Autofill the date field with today's date
+        document.getElementById('date').valueAsDate = new Date();
+    </script>
 </body>
 </html>
