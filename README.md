@@ -1,1 +1,1 @@
-This is used to automate attendance verification emails through a web form.
+This is used to automate attendance verification emails through a web form
