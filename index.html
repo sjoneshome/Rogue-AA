@@ -73,7 +73,7 @@
     <script type="text/javascript">
         // Initialize EmailJS with your public key
         (function() {
-            emailjs.init("_7rIdDEfftg8MsaPA"); // Your correct public key
+            emailjs.init("bhcrgjeaohhibqic"); // Your correct public key
         })();
 
         // Autofill the date field with today's date in the correct format (YYYY-MM-DD)
@@ -89,6 +89,9 @@
             const date = document.getElementById('date').value;
             const toEmail = document.getElementById('email').value;
 
+            // Debugging information
+            console.log('Form Data:', { firstName, lastName, date, toEmail });
+
             // Send email using EmailJS
             emailjs.send("service_vufoxjg", "template_r98lczb", {
                 to_email: toEmail,
@@ -96,8 +99,10 @@
                 date_of_attendance: date,
             })
             .then(function(response) {
+                console.log('Email sent successfully:', response);
                 alert('Email sent successfully!');
             }, function(error) {
+                console.error('Failed to send email:', error);
                 alert('Failed to send email. Error: ' + JSON.stringify(error));
             });
         });
