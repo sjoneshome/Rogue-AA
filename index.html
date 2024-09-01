@@ -49,8 +49,8 @@
             color: #333;
         }
     </style>
-    <!-- EmailJS SDK script -->
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <!-- Updated EmailJS SDK script -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
     <h2>Attendance Verification</h2>
@@ -70,10 +70,10 @@
         <input type="submit" value="Submit">
     </form>
 
-    <script>
-        // Initialize EmailJS with your user ID
+    <script type="text/javascript">
+        // Initialize EmailJS with your public key
         (function() {
-            emailjs.init("_7rIdDEfftg8MsaPA"); // Your EmailJS user ID
+            emailjs.init("_7rIdDEfftg8MsaPA"); // Your EmailJS public key
         })();
 
         // Autofill the date field with today's date in the correct format (YYYY-MM-DD)
