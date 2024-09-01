@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Verification step1</title>
+    <title>Attendance Verification</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -49,6 +49,8 @@
             color: #333;
         }
     </style>
+    <!-- EmailJS SDK script -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </head>
 <body>
     <h2>Attendance Verification</h2>
@@ -68,11 +70,10 @@
         <input type="submit" value="Submit">
     </form>
 
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS with the correct user ID
-        (function(){
-            emailjs.init("_7rIdDEfftg8MsaPA"); // Correct user ID
+        // Initialize EmailJS with your user ID
+        (function() {
+            emailjs.init("_7rIdDEfftg8MsaPA"); // Your EmailJS user ID
         })();
 
         // Autofill the date field with today's date in the correct format (YYYY-MM-DD)
@@ -89,7 +90,7 @@
             const toEmail = document.getElementById('email').value;
 
             // Send email using EmailJS
-            emailjs.send("service_vufoxjg", "template_r98lczb", { // Correct Template ID
+            emailjs.send("service_vufoxjg", "template_r98lczb", {
                 to_email: toEmail,
                 to_name: firstName + " " + lastName,
                 date_of_attendance: date,
