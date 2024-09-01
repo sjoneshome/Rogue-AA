@@ -70,9 +70,9 @@
 
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS with your user ID
+        // Initialize EmailJS with the correct user ID
         (function(){
-            emailjs.init("_7rdlDEfftg8MsaPA");
+            emailjs.init("_7rIdDEfftg8MsaPA"); // Correct user ID
         })();
 
         // Autofill the date field with today's date in the correct format (YYYY-MM-DD)
@@ -89,7 +89,7 @@
             const toEmail = document.getElementById('email').value;
 
             // Send email using EmailJS
-            emailjs.send("service_vufoxjg", "template_r98lczb", {
+            emailjs.send("service_vufoxjg", "template_r98lczb", { // Correct Template ID
                 to_email: toEmail,
                 to_name: firstName + " " + lastName,
                 date_of_attendance: date,
