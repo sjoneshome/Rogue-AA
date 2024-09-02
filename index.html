@@ -49,7 +49,7 @@
             color: #333;
         }
     </style>
-    <!-- Updated EmailJS SDK script -->
+    <!-- EmailJS SDK script -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
@@ -72,8 +72,10 @@
 
     <script type="text/javascript">
         // Initialize EmailJS with your public key
-        (function() {
-            emailjs.init("_7rIdDEfftg8MsaPA"); // Your actual public key
+        (function(){
+            emailjs.init({
+                publicKey: "_7rIdDEfftg8MsaPA" // Your actual public key
+            });
         })();
 
         // Autofill the date field with today's date in the correct format (YYYY-MM-DD)
