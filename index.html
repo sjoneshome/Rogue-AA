@@ -78,31 +78,7 @@
             });
         })();
 
-        // Autofill the date field with today's date in the correct format (YYYY-MM-DD)
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').value = today;
-
-        document.getElementById('attendanceForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            // Get form data
-            const firstName = document.getElementById('fname').value;
-            const lastName = document.getElementById('lname').value;
-            const date = document.getElementById('date').value;
-            const toEmail = document.getElementById('email').value;
-
-            // Send email using EmailJS
-            emailjs.send("service_f4gd9ow", "template_r98lczb", {
-                to_email: toEmail,
-                to_name: firstName + " " + lastName,
-                date_of_attendance: date,
-            })
-            .then(function(response) {
-                alert('Email sent successfully!');
-            }, function(error) {
-                alert('Failed to send email. Error: ' + JSON.stringify(error));
-            });
-        });
-    </script>
-</body>
-</html>
+        // Set today's date in local timezone to the date input field
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).p
