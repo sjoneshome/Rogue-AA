@@ -1,0 +1,118 @@
+Architecture Overview
+
+Utilizing existing free tier AWS services
+
+Request Handling with Lambda
+
+Receive Requests: Lambda functions handle incoming attendance requests.
+Temporary Storage: Store request data in Amazon S3 as a static database (such as JSON files) for up to six hours.
+Token Validation and Email Sending
+
+Scheduled Lambda Function: Another Lambda function runs periodically (e.g., every day) to:
+Query the S3 storage to retrieve the requests.
+Validate tokens based on your logic.
+Send out the necessary emails using EmailJS.
+Implementation Steps
+1. Handling and Storing Requests
+Create a Lambda Function for Request Handling
+
+Trigger: This Lambda function is triggered by HTTP requests (e.g., via API Gateway).
+Store Data in S3: Save the request data (e.g., in JSON format) to Amazon S3. Use a time-based naming convention for the files (e.g., requests/YYYY-MM-DD/HH-MM.json) to keep track of when they were stored.
+javascript
+Copy code
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+
+exports.handler = async (event) => {
+    const requestData = JSON.parse(event.body);
+    const date = new Date().toISOString().replace(/:/g, '-');
+    const bucketName = 'your-bucket-name';
+    const fileName = `requests/${date}.json`;
+
+    const params = {
+        Bucket: bucketName,
+        Key: fileName,
+        Body: JSON.stringify(requestData),
+        ContentType: 'application/json',
+    };
+
+    await s3.putObject(params).promise();
+    return { statusCode: 200, body: 'Request stored successfully' };
+};
+2. Validating Tokens and Sending Emails
+Create a Scheduled Lambda Function
+
+Trigger: Schedule this Lambda function to run periodically using Amazon CloudWatch Events (e.g., once daily at a specific time).
+Retrieve and Process Data from S3
+
+Fetch Files: Retrieve all files from S3 that are older than six hours.
+Validate Tokens: Validate each token by querying DynamoDB or using another validation method.
+Send Emails: Use EmailJS to send out the results to the relevant recipients.
+javascript
+Copy code
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+const emailjs = require('@emailjs/browser');
+
+exports.handler = async () => {
+    const bucketName = 'your-bucket-name';
+    const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
+    const prefix = 'requests/';
+
+    // List objects in the bucket with a prefix
+    const listParams = {
+        Bucket: bucketName,
+        Prefix: prefix,
+    };
+    const data = await s3.listObjectsV2(listParams).promise();
+    
+    for (const item of data.Contents) {
+        const objectParams = {
+            Bucket: bucketName,
+            Key: item.Key,
+        };
+        const objectData = await s3.getObject(objectParams).promise();
+        const requestData = JSON.parse(objectData.Body.toString());
+
+        // Token validation logic here
+        const isValid = validateToken(requestData.token);
+
+        if (isValid) {
+            // Send email using EmailJS
+            emailjs.send('service_id', 'template_id', {
+                to_email: requestData.email,
+                to_name: requestData.name,
+                token: requestData.token,
+                expiry_time: sixHoursAgo,
+            }).then(
+                (response) => console.log('Email sent successfully'),
+                (error) => console.error('Failed to send email', error)
+            );
+        }
+    }
+};
+
+function validateToken(token) {
+    // Implement your token validation logic here
+    return true; // Placeholder
+}
+3. Additional Considerations
+Monitoring and Alerts
+
+CloudWatch Logs: Monitor Lambda executions and log outputs using CloudWatch Logs. Set up alerts for any failures or issues.
+Error Handling
+
+Retries and Fault Tolerance: Implement error handling and retry logic in your Lambda functions to handle transient issues and ensure robustness.
+Security
+
+IAM Roles: Ensure that your Lambda functions have the necessary IAM roles and permissions to access S3 and EmailJS securely.
+Cost Management
+
+Storage Costs: Monitor your S3 storage usage to avoid exceeding the free tier limits. Clean up old files if necessary.
+Summary
+This architecture effectively utilizes AWS Lambda for request handling and processing, Amazon S3 for temporary storage, and EmailJS for sending emails. By using Lambda’s scheduled functions and S3’s object storage, you can efficiently manage and validate tokens within the free tier constraints, while minimizing individual DynamoDB read and write operations.
+
+
+
+
+
