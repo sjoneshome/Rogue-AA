@@ -1,0 +1,16 @@
+V1.1
+
+In my case, I solved the issue by using the timezone plugin from Dayjs. If you use dayjs, it's because of the timezone. I solved this with this line.
+
+import * as dayjs from 'dayjs';
+import * as timezone from 'dayjs/plugin/timezone';
+import * as utc from 'dayjs/plugin/utc';
+import * as customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+reviewData.dateComplete = "20-02-2024"
+const dateTz = dayjs.tz(reviewData.dateComplete, 'DD-MM-YYYY','UTC').toDate();
+console.log(dateTz) // 2024-02-20T00:00:00.000Z
