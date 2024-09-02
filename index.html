@@ -50,7 +50,9 @@
         }
     </style>
     <!-- EmailJS SDK script -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
     <h2>Attendance Verification</h2>
@@ -78,7 +80,39 @@
             });
         })();
 
-        // Set today's date in local timezone to the date input field
-        const today = new Date();
-        const day = String(today.getDate()).padStart(2, '0');
-        const month = String(today.getMonth() + 1).p
+        // Set today's date in the America/Los_Angeles time zone to the date input field
+        const timezone = 'America/Los_Angeles';
+        const today = moment().tz(timezone);
+        const formattedDate = today.format('MMDDYY'); // Format as MMDDYY
+
+        // Set the date input field to today's date in YYYY-MM-DD format
+        document.getElementById('date').value = today.format('YYYY-MM-DD');
+
+        document.getElementById('attendanceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get form data
+            const firstName = document.getElementById('fname').value;
+            const lastName = document.getElementById('lname').value;
+            const dateInput = document.getElementById('date').value;
+            const toEmail = document.getElementById('email').value;
+
+            // Reformat date from YYYY-MM-DD to MMDDYY
+            const [year, month, day] = dateInput.split('-');
+            const formattedDate = `${month}${day}${year.slice(-2)}`;
+
+            // Send email using EmailJS
+            emailjs.send("service_f4gd9ow", "template_r98lczb", {
+                to_email: toEmail,
+                to_name: firstName + " " + lastName,
+                date_of_attendance: formattedDate,
+            })
+            .then(function(response) {
+                alert('Email sent successfully!');
+            }, function(error) {
+                alert('Failed to send email. Error: ' + JSON.stringify(error));
+            });
+        });
+    </script>
+</body>
+</html>
