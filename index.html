@@ -50,8 +50,10 @@
         }
     </style>
     <!-- EmailJS SDK script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/plugin/utc.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/plugin/timezone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/plugin/customParseFormat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
@@ -80,9 +82,14 @@
             });
         })();
 
-        // Set today's date in the America/Los_Angeles time zone to the date input field
-        const timezone = 'America/Los_Angeles';
-        const today = moment().tz(timezone);
+        // Extend Day.js with necessary plugins
+        dayjs.extend(dayjs_plugin_utc);
+        dayjs.extend(dayjs_plugin_timezone);
+        dayjs.extend(dayjs_plugin_customParseFormat);
+
+        // Set today's date in the America/New_York time zone to the date input field
+        const timezone = 'America/New_York';
+        const today = dayjs().tz(timezone);
         const formattedDate = today.format('MMDDYY'); // Format as MMDDYY
 
         // Set the date input field to today's date in YYYY-MM-DD format
@@ -98,14 +105,13 @@
             const toEmail = document.getElementById('email').value;
 
             // Reformat date from YYYY-MM-DD to MMDDYY
-            const [year, month, day] = dateInput.split('-');
-            const formattedDate = `${month}${day}${year.slice(-2)}`;
+            const date = dayjs(dateInput).format('MMDDYY');
 
             // Send email using EmailJS
             emailjs.send("service_f4gd9ow", "template_r98lczb", {
                 to_email: toEmail,
                 to_name: firstName + " " + lastName,
-                date_of_attendance: formattedDate,
+                date_of_attendance: date,
             })
             .then(function(response) {
                 alert('Email sent successfully!');
