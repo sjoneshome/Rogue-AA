@@ -1,4 +1,7 @@
 V1.1
+Status: Deployed
+
+Issues solved: The original date was hard coded to "AmericanTime/Los Angeles".  Now the system will set the date to the users local timezone.
 
 In my case, I solved the issue by using the timezone plugin from Dayjs. If you use dayjs, it's because of the timezone. I solved this with this line.
 
